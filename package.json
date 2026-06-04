@@ -1,0 +1,16 @@
+{
+  "name": "youtube-canales-local",
+  "version": "1.0.0",
+  "description": "Página local personalizable para organizar canales de YouTube",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["youtube", "canales", "local", "vercel"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.3"
+  }
+}

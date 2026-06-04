@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TV Argentina en YouTube</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="hero">
+    <nav class="topbar">
+      <div class="brand">
+        <div class="logo">▶</div>
+        <div>
+          <h1>TV Argentina</h1>
+          <span>Panel local de señales de YouTube</span>
+        </div>
+      </div>
+      <button id="btnAgregar" class="btn primary">+ Agregar canal</button>
+    </nav>
+
+    <section class="intro">
+      <h2>Canales argentinos en vivo</h2>
+      <p>Elegí un canal del panel y miralo directamente en esta página. Podés editar, borrar o agregar nuevos links.</p>
+      <div class="searchBox">
+        <input id="buscador" type="search" placeholder="Buscar canal: Telefe, TN, C5N, A24..." />
+      </div>
+    </section>
+  </header>
+
+  <main class="container">
+    <section id="playerBox" class="playerBox">
+      <div class="playerHeader">
+        <div>
+          <strong id="playerTitle">Seleccioná un canal</strong>
+          <p id="playerMeta">La señal se cargará acá.</p>
+        </div>
+        <a id="btnAbrirYoutube" class="btn secondary" href="#" target="_blank" rel="noopener">Abrir en YouTube</a>
+      </div>
+      <div class="videoWrap">
+        <iframe
+          id="playerFrame"
+          title="Reproductor de YouTube"
+          src=""
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <div>
+        <strong id="contador">0 canales</strong>
+        <p>Lista personalizable guardada en este navegador.</p>
+      </div>
+      <div class="actions">
+        <button id="btnExportar" class="btn secondary">Exportar JSON</button>
+        <label class="btn secondary fileBtn">
+          Importar JSON
+          <input id="inputImportar" type="file" accept="application/json" />
+        </label>
+        <button id="btnReset" class="btn danger">Restaurar canales</button>
+      </div>
+    </section>
+
+    <section id="gridCanales" class="grid"></section>
+
+    <section id="emptyState" class="empty hidden">
+      <h3>No encontré canales</h3>
+      <p>Probá con otra búsqueda o agregá uno nuevo.</p>
+    </section>
+  </main>
+
+  <dialog id="modalCanal" class="modal">
+    <form id="formCanal" method="dialog">
+      <div class="modalHeader">
+        <h3 id="modalTitulo">Agregar canal</h3>
+        <button type="button" id="btnCerrar" class="iconBtn">×</button>
+      </div>
+
+      <input type="hidden" id="canalId" />
+
+      <label>Nombre del canal</label>
+      <input id="nombre" required placeholder="Ej: Telefe" />
+
+      <label>URL del vivo de YouTube</label>
+      <input id="url" required placeholder="https://www.youtube.com/watch?v=..." />
+
+      <label>Categoría</label>
+      <input id="categoria" placeholder="TV abierta, Noticias..." />
+
+      <label>Descripción</label>
+      <textarea id="descripcion" rows="3" placeholder="Breve descripción del canal"></textarea>
+
+      <label>Color de tarjeta</label>
+      <select id="color">
+        <option value="red">Rojo</option>
+        <option value="blue">Azul</option>
+        <option value="green">Verde</option>
+        <option value="purple">Violeta</option>
+        <option value="orange">Naranja</option>
+      </select>
+
+      <div class="modalActions">
+        <button type="button" id="btnCancelar" class="btn secondary">Cancelar</button>
+        <button type="submit" class="btn primary">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
