@@ -155,6 +155,24 @@ const canalesIniciales = [
   }
 ];
 
+const ALIAS_BUSQUEDA = {
+  lnmas: 'la nacion mas lanacionmas ln+ ln mas',
+  elnueve: 'canal 9 canal nueve nueve telenueve',
+  tvpublica: 'tv publica television publica canal 7 siete',
+  america: 'america tv canal 2 america envivo',
+  telefe: 'canal 11 once',
+  eltrece: 'canal 13 trece el trece',
+  cronica: 'cronica cronica tv',
+  a26: 'canal 26 veintiseis',
+  diputados: 'congreso diputados dtv diputados television',
+  senado: 'congreso senado senado tv',
+  luzu: 'luzu luzu tv nadie dice nada',
+  olga: 'olga olga en vivo',
+  blender: 'blender esto es blender',
+  gelatina: 'gelatina somos gelatina',
+  vorterix: 'vorterix vorterix oficial'
+};
+
 let canales = cargarCanales();
 let canalActivo = canales[0] || null;
 
@@ -232,10 +250,8 @@ function guardarCanales() {
 }
 
 function renderizar() {
-  const texto = buscador.value.toLowerCase().trim();
-  const filtrados = canales.filter(c =>
-    [c.nombre, c.categoria, c.descripcion, c.url].join(' ').toLowerCase().includes(texto)
-  );
+  const terminos = normalizarBusqueda(buscador.value).split(' ').filter(Boolean);
+  const filtrados = canales.filter(canal => canalCoincideConBusqueda(canal, terminos));
 
   contador.textContent = `${filtrados.length} ${filtrados.length === 1 ? 'canal' : 'canales'}`;
   emptyState.classList.toggle('hidden', filtrados.length > 0);
@@ -255,6 +271,27 @@ function renderizar() {
       </div>
     </article>
   `).join('');
+}
+
+function canalCoincideConBusqueda(canal, terminos) {
+  if (!terminos.length) return true;
+  const textoCanal = normalizarBusqueda([
+    canal.nombre,
+    canal.categoria,
+    canal.descripcion,
+    canal.url,
+    ALIAS_BUSQUEDA[canal.id] || ''
+  ].join(' '));
+  return terminos.every(termino => textoCanal.includes(termino));
+}
+
+function normalizarBusqueda(texto = '') {
+  return String(texto)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9+]+/g, ' ')
+    .trim();
 }
 
 window.reproducirCanal = (id) => {
