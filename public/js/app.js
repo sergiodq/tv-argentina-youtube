@@ -179,6 +179,7 @@ let canalActivo = canales[0] || null;
 const grid = document.getElementById('gridCanales');
 const contador = document.getElementById('contador');
 const buscador = document.getElementById('buscador');
+const toolbar = document.querySelector('.toolbar');
 const emptyState = document.getElementById('emptyState');
 const modal = document.getElementById('modalCanal');
 const form = document.getElementById('formCanal');
@@ -205,7 +206,10 @@ document.getElementById('btnReset').addEventListener('click', restaurarCanalesIn
 document.getElementById('btnExportar').addEventListener('click', exportarJSON);
 document.getElementById('inputImportar').addEventListener('change', importarJSON);
 ['input', 'search', 'change', 'keyup', 'paste', 'compositionend'].forEach(evento => {
-  buscador.addEventListener(evento, () => setTimeout(renderizar, 0));
+  buscador.addEventListener(evento, () => setTimeout(() => {
+    renderizar();
+    enfocarResultadosSiBusca();
+  }, 0));
 });
 
 form.addEventListener('submit', (e) => {
@@ -294,6 +298,11 @@ function normalizarBusqueda(texto = '') {
     .toLowerCase()
     .replace(/[^a-z0-9+]+/g, ' ')
     .trim();
+}
+
+function enfocarResultadosSiBusca() {
+  if (!normalizarBusqueda(buscador.value)) return;
+  (toolbar || grid).scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 window.reproducirCanal = (id) => {
