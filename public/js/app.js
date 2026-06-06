@@ -56,6 +56,102 @@ const canalesIniciales = [
     categoria: 'Noticias',
     descripcion: 'Canal 26 en vivo por YouTube.',
     color: 'purple'
+  },
+  {
+    id: 'lnmas',
+    nombre: 'LN+',
+    url: 'https://www.youtube.com/@lanacionmas/live',
+    categoria: 'Noticias',
+    descripcion: 'La Nacion Mas en vivo.',
+    color: 'blue'
+  },
+  {
+    id: 'america',
+    nombre: 'America TV',
+    url: 'https://www.youtube.com/@americaenvivo/live',
+    categoria: 'TV abierta',
+    descripcion: 'America TV en vivo por YouTube.',
+    color: 'orange'
+  },
+  {
+    id: 'tvpublica',
+    nombre: 'TV Publica',
+    url: 'https://www.youtube.com/user/TVPublicaArgentina/live',
+    categoria: 'TV abierta',
+    descripcion: 'Television Publica Argentina en vivo.',
+    color: 'blue'
+  },
+  {
+    id: 'elnueve',
+    nombre: 'El Nueve',
+    url: 'https://www.youtube.com/@elnueve/live',
+    categoria: 'TV abierta',
+    descripcion: 'El Nueve Argentina en vivo.',
+    color: 'orange'
+  },
+  {
+    id: 'diputados',
+    nombre: 'Diputados TV',
+    url: 'https://www.youtube.com/@DTVDIPUTADOSTELEVISION/live',
+    categoria: 'Institucional',
+    descripcion: 'Sesiones y actividad de Diputados en vivo.',
+    color: 'green'
+  },
+  {
+    id: 'senado',
+    nombre: 'Senado TV',
+    url: 'https://www.youtube.com/@SenadoTVArgentina/live',
+    categoria: 'Institucional',
+    descripcion: 'Sesiones y actividad del Senado en vivo.',
+    color: 'green'
+  },
+  {
+    id: 'canalrural',
+    nombre: 'Canal Rural',
+    url: 'https://www.youtube.com/@canalrural/live',
+    categoria: 'Agro',
+    descripcion: 'Noticias y contenidos del campo argentino.',
+    color: 'green'
+  },
+  {
+    id: 'luzu',
+    nombre: 'Luzu TV',
+    url: 'https://www.youtube.com/@luzutv/live',
+    categoria: 'Streaming',
+    descripcion: 'Streaming argentino con programas en vivo.',
+    color: 'purple'
+  },
+  {
+    id: 'olga',
+    nombre: 'Olga',
+    url: 'https://www.youtube.com/@olgaenvivo_/live',
+    categoria: 'Streaming',
+    descripcion: 'Canal argentino de streaming en vivo.',
+    color: 'purple'
+  },
+  {
+    id: 'blender',
+    nombre: 'Blender',
+    url: 'https://www.youtube.com/@estoesblender/live',
+    categoria: 'Streaming',
+    descripcion: 'Canal argentino de streaming y actualidad.',
+    color: 'purple'
+  },
+  {
+    id: 'gelatina',
+    nombre: 'Gelatina',
+    url: 'https://www.youtube.com/@SomosGelatina/live',
+    categoria: 'Streaming',
+    descripcion: 'Streaming argentino de actualidad y cultura.',
+    color: 'purple'
+  },
+  {
+    id: 'vorterix',
+    nombre: 'Vorterix',
+    url: 'https://www.youtube.com/@vorterixoficial/live',
+    categoria: 'Streaming',
+    descripcion: 'Radio y streaming argentino en vivo.',
+    color: 'orange'
   }
 ];
 
@@ -72,6 +168,7 @@ const modalTitulo = document.getElementById('modalTitulo');
 const playerTitle = document.getElementById('playerTitle');
 const playerMeta = document.getElementById('playerMeta');
 const playerFrame = document.getElementById('playerFrame');
+const playerFallback = document.getElementById('playerFallback');
 const btnAbrirYoutube = document.getElementById('btnAbrirYoutube');
 
 const campos = {
@@ -119,7 +216,12 @@ function cargarCanales() {
   }
   try {
     const parsed = JSON.parse(guardados);
-    return Array.isArray(parsed) && parsed.length ? parsed : canalesIniciales;
+    if (!Array.isArray(parsed) || !parsed.length) return canalesIniciales;
+    const idsGuardados = new Set(parsed.map(c => c.id));
+    const nuevos = canalesIniciales.filter(c => !idsGuardados.has(c.id));
+    const fusionados = [...parsed, ...nuevos];
+    if (nuevos.length) localStorage.setItem(STORAGE_KEY, JSON.stringify(fusionados));
+    return fusionados;
   } catch {
     return canalesIniciales;
   }
@@ -162,7 +264,11 @@ window.reproducirCanal = (id) => {
   const embed = convertirAEmbed(canal.url);
   playerTitle.textContent = canal.nombre;
   playerMeta.textContent = `${canal.categoria || 'Sin categoría'} · ${canal.descripcion || 'Señal de YouTube'}`;
-  playerFrame.src = embed;
+  playerFrame.src = embed || 'about:blank';
+  if (playerFallback) {
+    playerFallback.classList.toggle('hidden', Boolean(embed));
+    playerFallback.querySelector('a').href = canal.url;
+  }
   btnAbrirYoutube.href = canal.url;
   renderizar();
   document.getElementById('playerBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -171,7 +277,7 @@ window.reproducirCanal = (id) => {
 function convertirAEmbed(url) {
   const videoId = obtenerVideoId(url);
   if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-  return url;
+  return null;
 }
 
 function obtenerVideoId(url) {
