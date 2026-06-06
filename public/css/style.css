@@ -55,17 +55,17 @@ h1 { font-size: 24px; }
 .danger { background: rgba(255,77,77,.16); color: #ffb6b6; border: 1px solid rgba(255,77,77,.35); }
 .fileBtn input { display: none; }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
-.card { position: relative; overflow: hidden; min-height: 220px; border-radius: 26px; padding: 22px; border: 1px solid var(--border); background: var(--panel); box-shadow: var(--shadow); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.card { position: relative; overflow: hidden; min-height: 0; border-radius: 18px; padding: 18px; border: 1px solid var(--border); background: var(--panel); box-shadow: var(--shadow); }
 .card.active { outline: 2px solid rgba(255,255,255,.45); transform: translateY(-2px); }
 .card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 7px; background: var(--accent, var(--primary)); }
-.card .badge { display: inline-flex; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.08); color: var(--muted); font-size: 13px; margin-bottom: 18px; }
-.card h3 { font-size: 24px; margin-bottom: 10px; }
-.card p { color: var(--muted); line-height: 1.45; min-height: 62px; padding-right: 10px; }
-.cardActions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+.card .badge { display: inline-flex; padding: 5px 9px; border-radius: 999px; background: rgba(255,255,255,.08); color: var(--muted); font-size: 12px; margin-bottom: 12px; }
+.card h3 { font-size: 22px; margin-bottom: 8px; padding-right: 54px; }
+.card p { color: var(--muted); line-height: 1.35; min-height: 44px; padding-right: 0; font-size: 14px; }
+.cardActions { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
 .iconBtn { background: transparent; border: 0; color: var(--muted); font-size: 24px; cursor: pointer; }
-.cardMenu { position: absolute; top: 16px; right: 16px; display: flex; gap: 6px; }
-.small { padding: 9px 12px; font-size: 13px; }
+.cardMenu { position: absolute; top: 14px; right: 12px; display: flex; gap: 2px; }
+.small { width: 100%; min-height: 46px; padding: 13px 14px; font-size: 15px; border-radius: 14px; }
 
 .red { --accent: #ff0033; }
 .blue { --accent: #2f80ed; }
