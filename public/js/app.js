@@ -204,7 +204,9 @@ document.getElementById('btnCancelar').addEventListener('click', cerrarModal);
 document.getElementById('btnReset').addEventListener('click', restaurarCanalesIniciales);
 document.getElementById('btnExportar').addEventListener('click', exportarJSON);
 document.getElementById('inputImportar').addEventListener('change', importarJSON);
-buscador.addEventListener('input', renderizar);
+['input', 'search', 'change', 'keyup', 'paste', 'compositionend'].forEach(evento => {
+  buscador.addEventListener(evento, () => setTimeout(renderizar, 0));
+});
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
